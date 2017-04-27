@@ -1,0 +1,24 @@
+{
+  "manifest_version": 2,
+
+  "name": "Let's track these stories",
+  "description": "Keeps track of stories",
+  "version": "3.0",
+  "options_page": "options.html",
+
+
+  "browser_action": {
+    "default_icon": "nintyfive.png",
+    "default_popup": "popup.html",
+  	"default_title": "Let's keep track of the stories"
+  },
+
+  "content_security_policy" : "Content-Security-Policy: default-src 'self'; script-src https://cdn.plot.ly/plotly-1.2.0.min.js 'unsafe-eval'; object-src 'self'",
+
+  "permissions": [
+    "activeTab",
+    "storage",
+    "https://jira.ixaris.com/*",
+    "https://cdn.plot.ly/*"
+  ]
+}
