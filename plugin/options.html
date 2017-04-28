@@ -2,11 +2,16 @@
 <html>
 <head><title>Let's track these stories</title></head>
 <body>
-<h1>Setup and track <img src=jira_star.png height="25px"></img></h1>
+<h1>Setup and track</h1>
 
 <h2>Sprint ID </h2>
 <p>Input the sprint id (not name, id, e.g. Sprint 19 >> 725): </p>
-	<input type="text" id="sprintId" placeholder="Enter sprint id here:"/> 
+	<div>
+		<input type="text" id="sprintId" placeholder="Enter sprint id here:"/> 
+	</div>
+	<div>
+		<input type="text" id="jiraUrl" placeholder="JIRA url + JQL query string. Put ||SPRINTID|| placeholder.:"/> 
+	</div>
 
 	<div id="status"></div>
 	

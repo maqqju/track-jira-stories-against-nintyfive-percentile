@@ -1,7 +1,9 @@
 function save_options() {
   var sprintId = document.getElementById('sprintId').value;
+  var jiraUrl = document.getElementById('jiraUrl').value;
   chrome.storage.sync.set({
-    sprintId : sprintId
+    sprintId : sprintId,
+    jiraUrl : jiraUrl
   }, function() {
     // Update status to let user know options were saved.
     var status = document.getElementById('status');
@@ -18,7 +20,12 @@ function restore_options() {
     if (items.sprintId)  {
       document.getElementById('sprintId').value = items.sprintId;
     }
+  });
 
+  chrome.storage.sync.get('jiraUrl', function(items) {
+    if (items.jiraUrl)  {
+      document.getElementById('jiraUrl').value = items.jiraUrl;
+    }
   });
 }
 

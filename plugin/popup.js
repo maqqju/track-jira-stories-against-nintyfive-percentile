@@ -28,25 +28,36 @@ var sd2 = {
 	}	
 };
 
+var SPRINT_ID_PLACEHOLDER = '||SPRINTID||';
+
 function initSprint(callback) {
 
+
 	chrome.storage.sync.get('sprintId', function(items) {
+			var _sprintId = items.sprintId;
 			sessionStorage.setItem('sprintId', items.sprintId);
+			chrome.storage.sync.get('jiraUrl', function(items) {
 
-			getDataForSprint(items.sprintId, (_d) => {
-				var _statuses = _d.map((_i) => {
-					return _i.fields.status.name;
+				sessionStorage.setItem('jiraUrl', items.jiraUrl);
+
+				getDataForSprint(_sprintId, (_d) => {
+					var _statuses = _d.map((_i) => {
+						return _i.fields.status.name;
+					});
+
+					var _unique = Array.from(new Set(_statuses));
+					var _drpStatus = document.getElementById('drpStatus');
+
+					_unique.forEach((_s) => {
+						var _o = document.createElement('option');
+						_o.value = _s;
+						_o. innerHTML = _s;
+						_drpStatus.appendChild(_o);
+					});
 				});
 
-				var _unique = Array.from(new Set(_statuses));
-				var _drpStatus = document.getElementById('drpStatus');
 
-				_unique.forEach((_s) => {
-					var _o = document.createElement('option');
-					_o.value = _s;
-					_o. innerHTML = _s;
-					_drpStatus.appendChild(_o);
-				});
+				callback(_sprintId);
 			});
 
 			document.getElementById('btnInProgress').addEventListener('click', () => {
@@ -54,10 +65,14 @@ function initSprint(callback) {
 				var _status = _drpStatus.options[_drpStatus.selectedIndex].value;
 				loadGraph(sessionStorage.getItem('sprintId'), _status);
 			});
-
-			callback(items.sprintId);
 	});
 
+}
+
+function getJiraUrl(sprintId) {
+	var _jiraUrl = sessionStorage.getItem('jiraUrl');
+
+	return _jiraUrl.replace(SPRINT_ID_PLACEHOLDER, sprintId);
 }
 
 function getDataForSprint(sprintId, cb) {
@@ -66,7 +81,7 @@ function getDataForSprint(sprintId, cb) {
 		$.ajax
 		  ({
 		    type: "GET",
-		    url: "",
+		    url: getJiraUrl(sprintId),
 		    dataType: 'json',
 		    async: false,
 		    crossDomain: true,
